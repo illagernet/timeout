@@ -8,6 +8,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class App extends JavaPlugin {
 
+    public static final long TIMEOUT = 72 * 3600 * 1000;
+
     @Override
     public void onEnable() {
         File deathLogFile = new File(this.getDataFolder(), "deaths.yml");
@@ -15,16 +17,11 @@ public class App extends JavaPlugin {
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new DeathListener(deathLogFile, deathLog, this.getLogger()), this);
         pluginManager.registerEvents(new LoginListener(deathLog), this);
+        this.getCommand("revive").setExecutor(new ReviveCommand(deathLogFile, deathLog, this.getLogger()));
     }
     
     @Override
     public void onDisable() {
-    }
-    
-    public static final long TIMEOUT = 72 * 3600 * 1000;
-    
-    public static String kickMessage(long timeout) {
-        return App.kickMessage(timeout, "");
     }
 
     public static String kickMessage(long timeout, String message) {

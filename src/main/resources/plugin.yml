@@ -2,3 +2,11 @@ main: net.illager.plugin.timeout.App
 name: Timeout
 api-version: 1.14
 version: 1.0
+commands:
+  revive:
+    description: Revive a deathbanned player
+    usage: /revive <username>
+permissions:
+  illager.timeout.reive:
+    description: Allows a player to revive a deathbanned player
+    default: op
