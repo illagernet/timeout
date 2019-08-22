@@ -23,29 +23,30 @@ public class App extends JavaPlugin {
     
     public static final long TIMEOUT = 72 * 3600 * 1000;
     
-    public static String kickMessage(long timeout) {        
-        String remaining = "";
+    public static String kickMessage(long timeout) {
+        return App.kickMessage(timeout, "");
+    }
+
+    public static String kickMessage(long timeout, String message) {
         long days = timeout / 86400000;
         long hours = timeout % 86400000 / 3600000;
         long minutes = timeout % 3600000 / 60000;
         long seconds = timeout % 60000 / 1000;
-        
+
         if(days > 0) {
-            remaining = days + " " + (days > 1 ? "days": "day") + " " + hours + " " + (hours > 1 ? "hours": "hour");
+            return message + String.format("%d %s %d %s", days, (days > 1 ? "days": "day"), hours, (hours > 1 ? "hours": "hour"));
         }
         
         else if(hours > 0) {
-            remaining = hours + " " + (hours > 1 ? "hours": "hour") + " " + minutes + " " + (minutes > 1 ? "minutes": "minute");
+            return message + String.format("%d %s %d %s", hours, (hours > 1 ? "hours": "hour"), minutes, (minutes > 1 ? "minutes": "minute"));
         }
         
         else if(minutes > 0) {
-            remaining = minutes + " " + (minutes > 1 ? "minutes": "minute") + " " + seconds + " " + (seconds > 1 ? "seconds": "second");
+            return message + String.format("%d %s %d %s", minutes, (minutes > 1 ? "minutes": "minute"), seconds, (seconds > 1 ? "seconds": "second"));
         }
         
         else {
-            remaining = seconds + " " + (seconds > 1 ? "seconds": "second");
+            return message + String.format("%d %s", seconds, (seconds > 1 ? "seconds": "second"));
         }
-        
-        return remaining;
     }
 }

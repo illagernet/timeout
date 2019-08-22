@@ -21,7 +21,7 @@ public class LoginListener implements Listener {
         Date now = new Date();
         long msSinceDeath = now.getTime() - this.deathLog.getLong(playerId);
         if(msSinceDeath < App.TIMEOUT) {
-            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, App.kickMessage(msSinceDeath));
+            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, App.kickMessage(App.TIMEOUT - msSinceDeath, "Respawning in "));
         }
     }
 }

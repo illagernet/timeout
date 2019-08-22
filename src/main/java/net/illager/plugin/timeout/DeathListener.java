@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.Location;
 import java.util.Date;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -26,7 +27,18 @@ public class DeathListener implements Listener {
     public void onPlayerDeath(final PlayerDeathEvent event) {
         Player player = event.getEntity();
         String playerId = player.getUniqueId().toString();
-        player.kickPlayer(App.kickMessage(App.TIMEOUT));
+        Location playerPos = player.getLocation();
+        player.kickPlayer(
+            App.kickMessage(
+                App.TIMEOUT,
+                String.format(
+                    "You died at (%d, %d, %d). Respawning in ",
+                    playerPos.getBlockX(),
+                    playerPos.getBlockY(),
+                    playerPos.getBlockZ()
+                )
+            )
+        );
         Date now = new Date();
         this.deathLog.set(playerId, now.getTime());
         try {
