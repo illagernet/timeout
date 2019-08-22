@@ -6,7 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.entity.Player;
 import java.util.Date;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
 public class LoginListener implements Listener {
     FileConfiguration deathLog;
