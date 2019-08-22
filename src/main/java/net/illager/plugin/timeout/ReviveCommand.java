@@ -24,29 +24,37 @@ public class ReviveCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        
+
         // Player with permissions or console
-        if(sender.hasPermission("illager.timeout.revive") || !(sender instanceof Player)) {
+        if(sender.hasPermission("timeout.revive") || !(sender instanceof Player)) {
             
             // No argument supplied
-            if(args[0] == null || args[0].length() == 0) {
-                sender.sendMessage("You must specify a payer to revive.");
+            if(args.length == 0) {
+                sender.sendMessage("You must specify at least one player to revive.");
                 return false;
             }
 
-            // Intentional use of deprecated method
-            String playerId = Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString();
-            this.deathLog.set(playerId, 0);
-            try {
-                this.deathLog.save(this.deathLogFile);
-            } catch (IOException exception) {
-                this.serverLog.log(Level.SEVERE, "Could not zero-out death in " + deathLogFile, exception);
+            // Revive all players
+            for(String username : args) {
+                this.revivePlayer(username, sender);
             }
 
-            sender.sendMessage(args[0] + " has been revived.");
             return true;
         }
 
         return false;
+    }
+
+    public void revivePlayer(String username, CommandSender reviver) {
+        // Intentional use of deprecated method
+        String playerId = Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString();
+        this.deathLog.set(playerId, 0);
+        try {
+            this.deathLog.save(this.deathLogFile);
+            reviver.sendMessage(username + " has been revived.");
+        } catch (IOException exception) {
+            this.serverLog.log(Level.SEVERE, "Could not zero-out death in " + deathLogFile, exception);
+            reviver.sendMessage(username + " could not be revived.");
+        }
     }
 }
