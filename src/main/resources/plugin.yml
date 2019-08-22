@@ -6,7 +6,5 @@ commands:
   revive:
     description: Revive a deathbanned player
     usage: /revive <username>
-permissions:
-  illager.timeout.reive:
-    description: Allows a player to revive a deathbanned player
-    default: op
+    permission: timeout.revive
+    permission-message: You are not allowed to revive deathbanned players
