@@ -19,7 +19,7 @@ public class App extends JavaPlugin {
         
         // Register events
         PluginManager pluginManager = this.getServer().getPluginManager();
-        pluginManager.registerEvents(new DeathListener(deathLogFile, deathLog, this.getLogger()), this);
+        pluginManager.registerEvents(new DeathListener(this, deathLogFile, deathLog, this.getLogger()), this);
         pluginManager.registerEvents(new LoginListener(deathLog), this);
         
         // Regoster revive command
