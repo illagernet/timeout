@@ -12,11 +12,17 @@ public class App extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        
+        // Load death log
         File deathLogFile = new File(this.getDataFolder(), "deaths.yml");
         FileConfiguration deathLog = YamlConfiguration.loadConfiguration(deathLogFile);
+        
+        // Register events
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new DeathListener(deathLogFile, deathLog, this.getLogger()), this);
         pluginManager.registerEvents(new LoginListener(deathLog), this);
+        
+        // Regoster revive command
         this.getCommand("revive").setExecutor(new ReviveCommand(deathLogFile, deathLog, this.getLogger()));
     }
     
@@ -24,6 +30,7 @@ public class App extends JavaPlugin {
     public void onDisable() {
     }
 
+    // Return a kick message for a deathban
     public static String kickMessage(long timeout, String message) {
         long days = timeout / 86400000;
         long hours = timeout % 86400000 / 3600000;
