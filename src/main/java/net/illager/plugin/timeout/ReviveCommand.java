@@ -47,7 +47,7 @@ public class ReviveCommand implements CommandExecutor {
 
     public void revivePlayer(String username, CommandSender reviver) {
         // Intentional use of deprecated method
-        String playerId = Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString();
+        String playerId = Bukkit.getOfflinePlayer(username).getUniqueId().toString();
         this.deathLog.set(playerId, 0);
         try {
             this.deathLog.save(this.deathLogFile);
