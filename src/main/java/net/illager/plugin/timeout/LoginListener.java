@@ -3,9 +3,9 @@ package net.illager.plugin.timeout;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerLoginEvent;
-
 import org.bukkit.entity.Player;
 import java.util.Date;
+import java.util.logging.Level;
 
 public class LoginListener implements Listener {
     
@@ -24,12 +24,11 @@ public class LoginListener implements Listener {
         // If player is dead
         if(plugin.isPlayerDead(id)) {
             
-            long remaining = now.getTime() - this.plugin.getRespawnTime(id);
-            
+            long remaining = this.plugin.getRespawnTime(id) - now.getTime();
+
             // Player can respawn!
             if(remaining <= 0) {
                 this.plugin.removeDeath(id);
-                player.spigot().respawn();
             }
             
             // Player must wait

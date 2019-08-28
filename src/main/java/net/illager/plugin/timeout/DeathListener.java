@@ -6,6 +6,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 import java.util.Date;
+import org.bukkit.Bukkit;
+import java.lang.Runnable;
 
 public class DeathListener implements Listener {
     
@@ -24,14 +26,22 @@ public class DeathListener implements Listener {
         Location location = player.getLocation();
         Date now = new Date();
         
-        // Log Death and kick player
+        // Log Death
         this.plugin.logDeath(id, now.getTime(), location, message);
-        player.kickPlayer(
-            Plugin.kickMessage(
-                Plugin.SEVENTY_TWO_HOURS,
-                location,
-                message
-            )
-        );
+
+        // Schedule kick
+        Bukkit.getScheduler().runTaskLater(this.plugin, new Runnable() {
+
+            @Override
+            public void run() {
+                player.kickPlayer(
+                    Plugin.kickMessage(
+                        Plugin.SEVENTY_TWO_HOURS,
+                        location,
+                        message
+                    )
+                );
+            }
+        }, 20L);
     }
 }

@@ -9,6 +9,8 @@ import org.bukkit.ChatColor;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.logging.Level;
+import org.bukkit.World;
+import org.bukkit.util.Vector;
 
 public class Plugin extends JavaPlugin {
 
@@ -35,6 +37,7 @@ public class Plugin extends JavaPlugin {
     
     @Override
     public void onDisable() {
+        this.saveDeaths();
     }
     
     public void logDeath(String id, long time, Location location, String message) {
@@ -60,26 +63,39 @@ public class Plugin extends JavaPlugin {
     }
     
     public boolean isPlayerDead(String id) {
-        return this.deathCache.contains("id");
+        return this.deathCache.contains(id);
     }
     
     public long getRespawnTime(String id) {
-        return this.deathCache.getLong(id + ".time") +
+        return this.deathCache.getLong(id + ".time", 0) +
             Plugin.SEVENTY_TWO_HOURS -
-            this.deathCache.getLong(id + ".discount");
+            this.deathCache.getLong(id + ".discount", 0);
     }
     
     public Location getDeathLocation(String id) {
         return new Location(
-            this.getServer().getWorld(this.deathCache.getString(id + ".world")),
-            new Double(this.deathCache.getVector(id + ".pos").getBlockX()),
-            new Double(this.deathCache.getVector(id + ".pos").getBlockY()),
-            new Double(this.deathCache.getVector(id + ".pos").getBlockZ())
+            this.getServer().getWorld(this.deathCache.getString(id + ".world", "world")),
+            (double) this.deathCache.getVector(id + ".pos", new Vector()).getBlockX(),
+            (double) this.deathCache.getVector(id + ".pos", new Vector()).getBlockY(),
+            (double) this.deathCache.getVector(id + ".pos", new Vector()).getBlockZ()
         );
     }
     
     public String getDeathMessage(String id) {
-        return this.deathCache.getString(id + ".message");
+        return this.deathCache.getString(id + ".message", "Player was killed.");
+    }
+
+    public static String environmentName(World world) {
+        switch(world.getEnvironment()) {
+            case NORMAL:
+                return "the Overworld";
+            case NETHER:
+                return "the Nether";
+            case THE_END:
+                return "the End";
+            default:
+                return "an unknown dimension";
+        } 
     }
     
     public static String kickMessage(long timeout, Location location, String message) {
@@ -87,29 +103,30 @@ public class Plugin extends JavaPlugin {
         List<String> lines = new ArrayList<String>();
         
         // Death message
-        lines.add(message);
+        lines.add(ChatColor.YELLOW + message + ChatColor.RESET);
         
         // Location
         lines.add(
-            ChatColor.YELLOW +
             String.format(
                 "at (%d, %d, %d) in %s",
                 location.getBlockX(),
                 location.getBlockY(),
                 location.getBlockZ(),
-                location.getWorld().getName()
-            ) +
-            ChatColor.RESET
+                Plugin.environmentName(location.getWorld())
+            )
         );
         
-        // Respawning Countdown
+        // Respawning countdown
         lines.add("Respawning in " + Plugin.formatTime(timeout));
         
+        // Blank line
+        lines.add("");
+
         // Discord invite
         lines.add(
             "Join our Discord at " +
             ChatColor.BLUE +
-            "https://illager.net/discord" +
+            "illager.net/discord" +
             ChatColor.RESET
         );
         
