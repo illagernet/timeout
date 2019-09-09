@@ -23,7 +23,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.Command;
 
-public class Timeout extends JavaPlugin implements Listener {
+public class Timeout extends JavaPlugin implements Listener, CommandExecutor {
     public static final long SEVENTY_TWO_HOURS = 259200000;
     File file;
     FileConfiguration cache;
@@ -33,7 +33,6 @@ public class Timeout extends JavaPlugin implements Listener {
         this.file = new File(this.getDataFolder(), "deaths.yml");
         this.loadDeaths();
         this.getCommand("revive").setExecutor(this);
-        this.getCommand("reloaddeaths").setExecutor(this);
         this.getServer().getPluginManager().registerEvents(this, this);
     }
     
