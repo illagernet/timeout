@@ -15,6 +15,7 @@ import org.bukkit.util.Vector;
 public class Plugin extends JavaPlugin {
 
     public static final long SEVENTY_TWO_HOURS = 72 * 3600 * 1000;
+    public static final long ONE_HOUR = 3600 * 1000;
 
     // Death log
     File deathFile;
@@ -33,6 +34,7 @@ public class Plugin extends JavaPlugin {
         // Register Events
         this.getServer().getPluginManager().registerEvents(new DeathListener(this), this);
         this.getServer().getPluginManager().registerEvents(new LoginListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new ResurrectionRune(this), this);
     }
     
     @Override
@@ -51,6 +53,12 @@ public class Plugin extends JavaPlugin {
     
     public void removeDeath(String id) {
         this.deathCache.set(id, null);
+        this.saveDeaths();
+    }
+
+    public void discountDeath(String id, long time) {
+        long discount = this.deathCache.getLong(id + ".discount", 0);
+        this.deathCache.set(id + ".discount", discount + time);
         this.saveDeaths();
     }
     

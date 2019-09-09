@@ -5,7 +5,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.entity.Player;
 import java.util.Date;
-import java.util.logging.Level;
 
 public class LoginListener implements Listener {
     
