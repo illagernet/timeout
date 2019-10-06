@@ -1,0 +1,22 @@
+# Timeout in milliseconds
+timeout: 259200000 # 72 Hours
+
+# Display name mapping for worlds
+worlds:
+  world: the Overworld
+  world_nether: the Nether
+  world_the_end: the End
+
+# Default display name for an unknown world
+unknown-world: an unknown world
+
+# Deathban kick message
+# Bukkit color codes work as expected.
+# The following substitutions are defined:
+#   deathMessage: Death message broadcasted at time of death
+#   x, y, and z: X, Y, and Z block positions of death respectively
+#   world: World display name, as mapped from world names above
+#   timeout: Formatted timeout string
+kick-message: "&e${deathMessage}&r
+  at (${x}, ${y}, ${z}) in ${world}
+  Respawning in ${timeout}"

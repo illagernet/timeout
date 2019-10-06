@@ -1,7 +1,7 @@
 main: net.illager.timeout.Timeout
 name: Timeout
-api-version: 1.14
-version: 1.0
+api-version: @API-VERSION@
+version: @VERSION@
 commands:
   revive:
     description: Revive a deathbanned player
